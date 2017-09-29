@@ -1,0 +1,2 @@
+module ClientNavigationHelper
+end
