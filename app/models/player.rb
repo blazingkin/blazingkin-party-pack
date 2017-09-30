@@ -3,7 +3,11 @@ class Player < ApplicationRecord
     validates :client_ip, presence: true
     validates :game_session, presence: true
     validates :uuid, presence: true, uniqueness: true
-    
+
+    def game_id
+        game_session.short_id
+    end
+
     RAND_MAX = 9999999
     def self.get_unique_id
         uuid = Random.rand(RAND_MAX)
