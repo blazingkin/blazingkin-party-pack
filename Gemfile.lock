@@ -46,6 +46,9 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (~> 1.11.1)
       sass (>= 3.4.19)
+    bootstrap-sass (3.2.0.2)
+      sass (~> 3.2)
+    brakeman (4.0.1)
     builder (3.2.3)
     byebug (9.1.0)
     coffee-rails (4.2.2)
@@ -167,7 +170,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  autoprefixer-rails
   bootstrap (~> 4.0.0.beta)
+  bootstrap-sass (~> 3.2.0)
+  brakeman
   byebug
   coffee-rails (~> 4.2)
   jbuilder (~> 2.5)

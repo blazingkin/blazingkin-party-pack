@@ -1,0 +1,21 @@
+<div class="text-center">
+    <div class="row">
+        <div class="col-md-4 col-sm-4">
+        </div>
+        <div class="col-md-4 col-sm-4">
+            <div class="form-group">
+                <label for="game-id">Game ID:</label>
+                <input type="text" class="form-control" id="game-id"></input>
+                <br />
+                <%= submit_tag 'Join', class: 'btn btn-danger text-white', id: 'client-connect-to-game-with-id' %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$('#client-connect-to-game-with-id').click(function() {
+    var game_id = $('#game-id').val();
+    window.location.replace('/client/' + game_id);
+});
+</script>
