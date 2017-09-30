@@ -4,9 +4,16 @@
     </div>
     <%= render partial: 'shared/players', locals: {players: @game_session.players} %>
 </div>
+<br />
+<div class="row">
+    <div class="btn btn-danger" id="start-game-button">Start Game</div>
+</div>
 
 <script>
     $(document).on('turbolinks:load', function(){
         create_client_lobby_connection('<%= @game_session.short_id %>');
+    });
+    $('#start-game-button').click(function(){
+        App.lobby_info.send({event_type: 'start_game', game: 'click_fast'});
     });
 </script>

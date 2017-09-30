@@ -1,3 +1,13 @@
+<% if !@player.nil? && @player.uuid == player.uuid %>
+<div class="row player-<%= player.uuid %> alert-danger">
+    <div class="col-md-4 col-sm-4" id="player-name-<%= player.uuid %>">
+        <%= player.name %>
+    </div>
+    <div class="col-md-4 col-sm-4">
+        <%= player.uuid %>
+    </div>
+</div>
+<% else %>
 <div class="row player-<%= player.uuid %>">
     <div class="col-md-4 col-sm-4" id="player-name-<%= player.uuid %>">
         <%= player.name %>
@@ -6,3 +16,4 @@
         <%= player.uuid %>
     </div>
 </div>
+<% end %>

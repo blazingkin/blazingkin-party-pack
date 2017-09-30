@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170930024556) do
+ActiveRecord::Schema.define(version: 20170930203700) do
+
+  create_table "game_data", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "game_type"
+    t.integer  "game_session_id"
+    t.index ["game_session_id"], name: "index_game_data_on_game_session_id", using: :btree
+  end
 
   create_table "game_sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
