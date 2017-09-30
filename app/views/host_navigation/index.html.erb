@@ -2,4 +2,11 @@
     <div class="text-center">
         <h2>Join Code <i class="text-danger"><%= @game_session.short_id %></i></h2>
     </div>
+    <%= render partial: 'shared/players', locals: {players: @game_session.players} %>
 </div>
+
+<script>
+    $(document).on('turbolinks:load', function(){
+        create_client_lobby_connection('<%= @game_session.short_id %>');
+    });
+</script>
