@@ -44,6 +44,7 @@ class LobbyInfoChannel < ApplicationCable::Channel
           winner.score += 1
           winner.save
         end
+        GameDatum.clear_store(current_player.id)
         current_player.game_datum.destroy!
         current_player.players.each do |pl|
           player_event = {

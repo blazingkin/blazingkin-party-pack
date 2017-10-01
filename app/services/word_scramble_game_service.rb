@@ -35,13 +35,11 @@ class WordScrambleGameService < GameService
 
     def init_game(game_session)
         GameDatum.find_by(game_session: game_session.id)&.destroy!
-        game_session.reload
         game_datum = GameDatum.create({game_type: 'word_scramble'})
         game_session.game_datum = game_datum
         game_session.game_datum.store = {}
         game_session.game_datum.store['words'] = {}
         game_session.game_datum.store['players'] = {}
-        game_datum.save
     end
 
     private
@@ -57,28 +55,22 @@ class WordScrambleGameService < GameService
     end
 
     def is_word_by_player?(game_session, word, player)
-        game_session.game_datum.reload
         game_session.game_datum.store['words'][word][:player] == player.uuid
     end
 
     def add_to_word_list(game_session, word, player)
-        game_session.game_datum.reload
         scrambled = word.split(" ").map { |w| w.split("").shuffle.join }.join(" ")
         game_session.game_datum.store['words'] ||= {}
         game_session.game_datum.store['words'][word] = {scrambled: scrambled, player: player.uuid}
-        game_session.game_datum.save
     end
 
     def remove_word_from_list(game_session, word)
-        game_session.game_datum.reload
         player = game_session.game_datum.store['words'][word][:player]
         game_session.game_datum.store['words']&.delete(word)
-        game_session.game_datum.save
         Player.find_by({uuid: player})
     end
 
     def is_in_word_list?(game_session, word)
-        game_session.game_datum.reload
         word_list = game_session.game_datum.store['words']
         word_list&.each do |k, v|
             return true if k == word
@@ -87,12 +79,10 @@ class WordScrambleGameService < GameService
     end
 
     def points_for_player(game_session, player)
-        game_session.game_datum.reload
         game_session.game_datum.store['players'] ||= {}
         game_session.game_datum.store['players'][player.uuid] ||= {}
         game_session.game_datum.store['players'][player.uuid]['points'] ||= 0
         game_session.game_datum.store['players'][player.uuid]['points'] += 1
-        game_session.game_datum.save
         data = {
             event_type: 'player_points',
             player_uuid: player.uuid,

@@ -12,7 +12,6 @@ class ClickFastGameService < GameService
         if data['click']
             game_session.game_datum.store[player.uuid.to_s]  ||= 0
             score = game_session.game_datum.store[player.uuid.to_s] += 1
-            game_session.game_datum.save
             ActionCable.server.broadcast(game_session.game_host_channel,
              {  data_type: 'click',
                 player_uuid: player.uuid,
@@ -31,7 +30,6 @@ class ClickFastGameService < GameService
         game_datum = GameDatum.create({game_type: 'click_fast'})
         game_session.update({game_datum: game_datum})
         game_session.game_datum.store = {}
-        game_datum.save
     end
 
 end
