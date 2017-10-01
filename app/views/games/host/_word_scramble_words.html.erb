@@ -1,4 +1,9 @@
-<% words.each do |w| %>
-    <%= w %>
-    <br />
+<% words.each_slice(6) do |w_l| %>
+    <div class="row">
+    <% w_l.each do |w| %>
+        <div class="col-md-2 col-sm-2">
+            <h3><%= w %></h3>
+        </div>
+    <% end %>
+    </div>
 <% end %>

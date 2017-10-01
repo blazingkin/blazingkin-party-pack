@@ -54,10 +54,11 @@ class Player < ApplicationRecord
     FIRST_NAMES = %w(sad unbelievable awe-inspiring slow wet inky electric sticky thick nerdy cool tired energetic smelly hot cold
                     enigmatic clever crazy horse dog ramen famous ugly pretty thin large sexy green pink purple adorable adventurous
                     aggressive bloody brave charming clumsy confused white red orange delightful enchanting evil fair filthy grotesque
-                    unique short tall obnoxious selfish greasy)
+                    unique short tall obnoxious selfish greasy fragile grandiose dumb dumbest holy immaculate)
     LAST_NAMES = %w(turtle computer keyboard actor chair key backpack flashlight toilet egg waffle sword toast banana tape headphones
                     dictionary statue photograph mother-in-law cat monkey baby man woman car fruit cherry kitten balloon bird cake soda
-                    spy underwear vegetable writer zebra sea squirrel pickle partner bee couch cloth cream donkey border)
+                    spy underwear vegetable writer zebra sea squirrel pickle partner bee couch cloth cream donkey border hot-pocket tv-remote
+                    phone automated-wiping-device)
     def self.create_new_player(opts={})
         player = Player.new(opts.merge(
                 {uuid: get_unique_id, name: "#{FIRST_NAMES.sample} #{LAST_NAMES.sample}".titleize, score: 0}

@@ -1,6 +1,11 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # The ActionCable connection for localhost uses localhost (what a surprise)
+  Rails.application.configure do 
+    config.action_cable.url = "ws://blazingk.in:80/cable"
+  end 
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

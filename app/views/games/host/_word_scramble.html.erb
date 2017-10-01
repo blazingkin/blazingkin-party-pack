@@ -3,50 +3,51 @@
         <p id="header-text">Welcome to Word Scramble! Try to guess what the other players typed!</p>
     </div>
 </div>
-<% players.each do |player| %>
-    <div class="row">
-        <div class="col-md-6">
-            <%= player.name %>
-        </div>
-        <div class="col-md-3">
-            Added <span id="player-add-<%= player.uuid %>">0</span>
-        </div>
-        <div class="col-md-3">
-            Guessed <span id="player-guess-<%= player.uuid %>">0</span>
+
+<div id="victory-text" style="display:none">
+    <h1>The winner is <span id="winner-name"></span></h1>
+</div>
+
+
+<div class="row">
+    <div class="col-md-9 col-sm-9">
+        <div id="world-scramble-words-container" style="word-break: break-word;">
+
         </div>
     </div>
-    <hr />
-<% end %>
-<br />
-<div id="world-scramble-words-container">
-
+    <div class="col-md-3 col-sm-9">
+        <% players.each do |player| %>
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <%= player.name %>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    Points <span id="player-points-<%= player.uuid %>">0</span>
+                </div>
+            </div>
+            <hr />
+        <% end %>
+    </div>
 </div>
 
 <script>
 
     App.gamejs = {};
-    var time_remaining = 15;
-    setTimeout(countdown, 0);
-
     var winning_id;
     App.gamejs.receive = function(data){
         if (data['event_type'] === 'word_update'){
             $('#world-scramble-words-container').html(data['render'])
+        }else if (data['event_type'] === 'player_points'){
+            $('#player-points-'+data['player_uuid']).html(data['points']);
+            if (data['points'] >= 20){
+                winning_id = data['player_uuid'];
+                App.gamejs.receive = {};
+                $('#winner-name').html(data['name']);
+                $('#victory-text').show();
+                setTimeout(send_winner, 2500);
+            }
         }
     };
-
-    function countdown(){
-        if (time_remaining-- <= 1){
-
-            $('#winner-field').html(winner);
-            $('#winner-display').show();
-            App.gamejs.receive = function(data){};
-            setTimeout(send_winner, 2500);
-        }else{
-            $('#time-remaining').html(time_remaining);
-            setTimeout(countdown, 1000);
-        }
-    }
 
     function send_winner(){
         App.lobby_info.send({event_type: "game_over", winner: winning_id});

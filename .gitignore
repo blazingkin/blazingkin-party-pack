@@ -16,6 +16,7 @@
 # Ignore secrets
 /secrets/*
 /config/database.yml
+/public/assets/*
 
 # Ignore Byebug command history file.
 .byebug_history
