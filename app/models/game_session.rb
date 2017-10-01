@@ -2,6 +2,7 @@ class GameSession < ApplicationRecord
     validates :short_id, presence: true, uniqueness: true
     has_many :players, dependent: :destroy
     has_one :game_datum, dependent: :destroy
+    after_touch :clear_association_cache
 
     def game_session
         self
