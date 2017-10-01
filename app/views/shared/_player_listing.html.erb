@@ -1,10 +1,11 @@
-<% if !@player.nil? && @player.uuid == player.uuid %>
+<% current_player ||= nil %>
+<% if !current_player.nil? && current_player.uuid == player.uuid %>
 <div class="row player-<%= player.uuid %> alert-danger">
     <div class="col-md-4 col-sm-4" id="player-name-<%= player.uuid %>">
         <%= player.name %>
     </div>
     <div class="col-md-4 col-sm-4">
-        <%= player.uuid %>
+        <%= player.score %>
     </div>
 </div>
 <% else %>
@@ -13,7 +14,7 @@
         <%= player.name %>
     </div>
     <div class="col-md-4 col-sm-4">
-        <%= player.uuid %>
+        <%= player.score %>
     </div>
 </div>
 <% end %>

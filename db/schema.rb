@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171001005521) do
+ActiveRecord::Schema.define(version: 20170930234213) do
 
   create_table "game_data", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at",      null: false
@@ -22,11 +22,10 @@ ActiveRecord::Schema.define(version: 20171001005521) do
   end
 
   create_table "game_sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string   "short_id"
     t.string   "host_ip"
-    t.boolean  "is_reloading_lobby"
     t.index ["short_id"], name: "index_game_sessions_on_short_id", unique: true, using: :btree
   end
 

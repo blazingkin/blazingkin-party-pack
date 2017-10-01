@@ -1,12 +1,13 @@
 class GameService
 
     GAME_SERVICES = {
-        "click_fast" => ClickFastGameService
+        "click_fast" => ClickFastGameService.new,
+        "word_scramble" => WordScrambleGameService.new
     }
 
 
     def self.get_service(game_name)
-        GAME_SERVICES[game_name].new
+        GAME_SERVICES[game_name]
     end
 
     def render_game_client(game_session, renderer)
@@ -25,7 +26,7 @@ class GameService
 
     end
 
-    def init_game(game_session, action_cable_server)
+    def init_game(game_session)
         
     end
 

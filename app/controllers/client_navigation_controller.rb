@@ -11,7 +11,7 @@ class ClientNavigationController < ApplicationController
             redirect_to client_url
             return
         end
-        @player = Player.find_by(id: cookies.signed[:player_id]) || Player.create_new_player({
+        @player = Player.create_new_player({
             client_ip: request.remote_ip.to_s,
             game_session: @game_session,
         })

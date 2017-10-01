@@ -23,7 +23,7 @@ class LobbyInfoChannel < ApplicationCable::Channel
     elsif payload['event_type'] == 'start_game'
       if current_player.is_a? GameSession
         game = GameService.get_service(payload['game'])
-        game.init_game(current_player, ActionCable.server)
+        game.init_game(current_player)
         event = {
           event_type: 'start_game',
           render: game.render_game_client(current_player, ApplicationController.renderer)
@@ -39,25 +39,28 @@ class LobbyInfoChannel < ApplicationCable::Channel
       end
     elsif payload['event_type'] == 'game_over'
       if current_player.is_a? GameSession
-        current_player.is_reloading_lobby = true
         if !payload['winner'].blank?
           winner = Player.find_by({uuid: payload['winner']})
           winner.score += 1
           winner.save
         end
+        current_player.game_datum.destroy!
+        current_player.players.each do |pl|
+          player_event = {
+            event_type: 'reload_lobby',
+            render: ApplicationController.renderer.render(partial: 'client_navigation/lobby',
+                    locals: {player: pl, game_session: current_player})
+          }
+          ActionCable.server.broadcast(pl.player_personal_lobby_channel, player_event)
+        end
         host_event = {
           event_type: 'reload_lobby',
-          lobby_location: '/host'
+          render: ApplicationController.renderer.render(partial: 'host_navigation/lobby',
+                    locals: {game_session: current_player})
         }
         ActionCable.server.broadcast(current_player.group_lobby_channel, host_event)
-        player_event = {
-          event_type: 'reload_lobby',
-          lobby_location: "/client/#{current_player.short_id}"
-        }
-        ActionCable.server.broadcast(current_player.player_lobby_channel, player_event)
+
       end
-    elsif payload['event_type'] == 'done_loading'
-      current_player.is_reloading_lobby = false
     end
   end
 

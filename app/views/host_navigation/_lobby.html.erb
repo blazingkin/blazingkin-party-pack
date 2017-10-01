@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="text-center">
+        <h2>Join Code <i class="text-danger"><%= game_session.short_id %></i></h2>
+    </div>
+    <%= render partial: 'shared/players', locals: {players: game_session.players} %>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-3">
+        <div class="btn btn-danger" id="start-click-game-button">Click Quick</div>
+    </div>
+    <div class="col-md-3">
+        <div class="btn btn-danger" id="start-scramble-game-button">Word Scramble</div>
+    </div>
+</div>
+
+<script>
+    $(document).on('turbolinks:load', function(){
+        create_client_lobby_connection('<%= game_session.short_id %>');
+    });
+    $('#start-click-game-button').click(function(){
+        App.lobby_info.send({event_type: 'start_game', game: 'click_fast'});
+    });
+    $('#start-scramble-game-button').click(function(){
+        App.lobby_info.send({event_type: 'start_game', game: 'word_scramble'});
+    });
+</script>

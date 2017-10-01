@@ -1,13 +1,14 @@
+<% current_player ||= nil %>
 <div class="row">
     <div class="col-md-4 col-sm-4">
         Players
     </div>
     <div class="col-md-4 col-sm-4">
-        UUID (this will not be shown to end users)
+        Score
     </div>
 </div>
 <div class="player-listing-container">
     <% players.each do |player| %>
-        <%= render partial: 'shared/player_listing', locals: {player: player} %>
+        <%= render partial: 'shared/player_listing', locals: {player: player, current_player: current_player} %>
     <% end %>
 </div>
