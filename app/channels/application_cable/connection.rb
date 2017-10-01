@@ -7,7 +7,7 @@ module ApplicationCable
     end
 
     def disconnect
-      if self.current_player&.is_a?(Player)
+      if self.current_player&.is_a?(Player) && !self.current_player.game_session.is_reloading_lobby
         self.current_player.destroy!
       end
     end

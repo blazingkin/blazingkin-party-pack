@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 
   root 'welcome#index'
   get '/host/new', to: 'host_navigation#index'
+  get '/host', to: 'host_navigation#load_lobby'
   get '/client/', to: 'client_navigation#index'
   get '/client/:game_id', to: 'client_navigation#connect'
+  
+
 end

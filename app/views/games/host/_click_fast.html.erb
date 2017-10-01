@@ -1,0 +1,53 @@
+<% players.each do |player| %>
+    <%= player.name %> - <span id="player-score-<%= player.uuid %>">0</span>
+    <br />
+<% end %>
+
+<br />
+
+<h2 id="countdown-timer"><span id="time-remaining"></span> seconds left!</h2>
+<h2 id="winner-display" style="display:none;">The winner is <span id="winner-field"></span></h2>
+
+<script>
+    App.gamejs = {};
+    var time_remaining = 15;
+    setTimeout(countdown, 0);
+    var scores = <%= Hash[players.map {|player| [player.uuid, {score: 0, name: player.name}] } ].to_json.html_safe %>;
+    var winning_id;
+    App.gamejs.receive = function(data){
+        if (data['data_type'] === 'click'){
+            scores[data['player_uuid']]['score'] = data['player_score']
+            $('#player-score-'+data['player_uuid']).html(data['player_score']);
+        }
+    };
+
+    function countdown(){
+        if (time_remaining-- <= 0){
+            $('#countdown-timer').hide();
+            var winner = "No one!";
+            var winning_score = -1;
+            for (var key in scores) {
+                if (scores.hasOwnProperty(key)) {
+                    var obj = scores[key];
+                    if (obj['score'] > winning_score){
+                        winner = obj['name'];
+                        winning_score = obj['score'];
+                        winning_id = key;
+                    }
+                }
+            }
+            $('#winner-field').html(winner);
+            $('#winner-display').show();
+            App.gamejs.receive = function(data){};
+            setTimeout(send_winner, 2500);
+        }else{
+            $('#time-remaining').html(time_remaining);
+            setTimeout(countdown, 1000);
+        }
+    }
+
+    function send_winner(){
+        App.lobby_info.send({event_type: "game_over", winner: winning_id});
+    }
+
+</script>

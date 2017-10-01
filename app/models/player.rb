@@ -8,6 +8,22 @@ class Player < ApplicationRecord
         game_session.lobby_channel
     end
 
+    def group_lobby_channel
+        "lobby-#{game_id}:client"
+    end
+
+    def player_lobby_channel
+        group_lobby_channel
+    end
+
+    def player_personal_lobby_channel
+        "lobby-#{game_id}-#{uuid}:client"
+    end
+
+    def host_lobby_channel
+        game_session.group_lobby_channel
+    end
+
     def game_id
         game_session.short_id
     end
@@ -44,7 +60,7 @@ class Player < ApplicationRecord
                     spy underwear vegetable writer zebra sea squirrel pickle partner bee couch cloth cream donkey border)
     def self.create_new_player(opts={})
         player = Player.new(opts.merge(
-                {uuid: get_unique_id, name: "#{FIRST_NAMES.sample} #{LAST_NAMES.sample}".titleize}
+                {uuid: get_unique_id, name: "#{FIRST_NAMES.sample} #{LAST_NAMES.sample}".titleize, score: 0}
         ))
         return player if player.save
         return nil

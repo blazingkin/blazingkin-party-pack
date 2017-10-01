@@ -3,6 +3,22 @@ class GameSession < ApplicationRecord
     has_many :players, dependent: :destroy
     has_one :game_datum, dependent: :destroy
 
+    def game_session
+        self
+    end
+
+    def group_lobby_channel
+        "lobby-#{short_id}:host"
+    end
+
+    def player_lobby_channel
+        "lobby-#{short_id}:client"
+    end
+
+    def host_lobby_channel
+        group_lobby_channel
+    end
+
     def game_type
         game_datum.game_type
     end

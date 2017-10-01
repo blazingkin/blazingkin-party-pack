@@ -5,17 +5,15 @@ class GameChannel < ApplicationCable::Channel
       stream_from current_player.game_personal_channel
     else
       stream_from current_player.game_host_channel
-      game = current_player.game_service
-      event = {
-        event_type: 'change_view',
-        render: game.render_game_host(ApplicationController.renderer)
-      }
-      ActionCable.server.broadcast(current_player.game_host_channel, event)
     end
   end
 
   def receive(data)
-    
+    if current_player.is_a?(Player)
+      current_player.game_service.receive_client_data(current_player.game_session, data, current_player)
+    else
+      current_player.game_service.receive_host_data(current_player.game_session, data)
+    end
   end
 
   def unsubscribed

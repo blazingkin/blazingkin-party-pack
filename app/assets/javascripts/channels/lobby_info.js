@@ -15,6 +15,7 @@ App.lobby_info = App.cable.subscriptions.create({channel: "LobbyInfoChannel", ga
     },
   
     received: function(data) {
+        console.log(data);
         if (data['event_type'] === 'player_leave'){
             remove_player_from_lobby_list(data['player']);
         }else if (data['event_type'] === 'player_join'){
@@ -23,6 +24,8 @@ App.lobby_info = App.cable.subscriptions.create({channel: "LobbyInfoChannel", ga
             rename_player_in_lobby_list(data['player_id'], data['new_name']);
         }else if (data['event_type'] === 'start_game'){
             create_game_client_connection(data['render']);
+        }else if (data['event_type'] === 'reload_lobby'){
+            window.location.replace(data['lobby_location'])
         }
     }
   });

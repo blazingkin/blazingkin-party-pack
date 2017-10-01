@@ -10,21 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170930203700) do
+ActiveRecord::Schema.define(version: 20171001005521) do
 
   create_table "game_data", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "game_type"
     t.integer  "game_session_id"
+    t.json     "json"
     t.index ["game_session_id"], name: "index_game_data_on_game_session_id", using: :btree
   end
 
   create_table "game_sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
     t.string   "short_id"
     t.string   "host_ip"
+    t.boolean  "is_reloading_lobby"
     t.index ["short_id"], name: "index_game_sessions_on_short_id", unique: true, using: :btree
   end
 
@@ -35,6 +37,7 @@ ActiveRecord::Schema.define(version: 20170930203700) do
     t.string   "client_ip"
     t.integer  "uuid"
     t.integer  "game_session_id"
+    t.integer  "score"
     t.index ["game_session_id"], name: "index_players_on_game_session_id", using: :btree
   end
 

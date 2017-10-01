@@ -1,4 +1,4 @@
-<%= render partial: 'shared/players', locals: {players: @game_session.players} %>
+<%= render partial: 'shared/players', locals: {players: game_session.players} %>
 
 <div class="row name-change-field">
     <div class="form-group">
@@ -11,9 +11,9 @@
 
 <script>
     $(document).on('turbolinks:load', function(){
-        create_client_lobby_connection('<%= @game_session.short_id %>');
+        create_client_lobby_connection('<%= game_session.short_id %>');
     });
     $('#rename-submit').click(function(){
-        App.lobby_info.send({event_type: 'player_rename', player_id: <%= @player.uuid %>, new_name: $('#rename-entry').val()});
+        App.lobby_info.send({event_type: 'player_rename', player_id: <%= player.uuid %>, new_name: $('#rename-entry').val()});
     });
 </script>
