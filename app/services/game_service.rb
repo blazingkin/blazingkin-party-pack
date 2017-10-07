@@ -1,12 +1,13 @@
 class GameService
 
     GAME_SERVICES = {
-        "click_fast" => ClickFastGameService.new,
-        "word_scramble" => WordScrambleGameService.new
+        'click_fast' => ClickFastGameService.new,
+        'word_scramble' => WordScrambleGameService.new,
+        'sentence_builder' => SentenceBuilderGameService.new
     }
 
-
     def self.get_service(game_name)
+        return GAME_SERVICES.values.sample if game_name == 'random'
         GAME_SERVICES[game_name]
     end
 

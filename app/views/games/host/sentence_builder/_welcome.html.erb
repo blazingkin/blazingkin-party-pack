@@ -1,0 +1,38 @@
+<div class="row text-center">
+        WELCOME TO (Not yet named sentence builder game)!!!!
+        <br />
+        On your personal device, you will see a place to type some words.
+        <br />
+        Start typing as many words as you can think of!
+        <br />
+        If you get stuck, you can always use the "random word" button.
+</div>
+
+<br />
+
+<div class="row">
+    <div class="big-text text-center" id="timer-text">
+        You have <span id="time-remaining">20</span> seconds remaining!
+    </div>
+</div>
+
+<script>
+
+    App.gamejs = {};
+    App.gamejs.receive = function(){};
+    var time_remaining = 20;
+    setTimeout(countdown, 1000);
+
+    function countdown(){
+        if (time_remaining-- > 1){
+            $('#time-remaining').html(time_remaining);
+            setTimeout(countdown, 1000);
+        }else{
+            $('#timer-text').html("Times Up!");
+            App.game.send({phase: 'build'});
+        }
+    }
+
+
+
+</script>

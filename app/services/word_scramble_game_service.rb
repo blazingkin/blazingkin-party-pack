@@ -1,11 +1,11 @@
 class WordScrambleGameService < GameService
 
     def render_game_client(game_session, renderer)
-        renderer.render partial: 'games/client/word_scramble'
+        renderer.render partial: 'games/client/word_scramble/word_scramble'
     end
 
     def render_game_host(game_session, renderer)
-        renderer.render partial: 'games/host/word_scramble', locals: {players: game_session.players}
+        renderer.render partial: 'games/host/word_scramble/word_scramble', locals: {players: game_session.players}
     end
 
     WORD_MIN = 4
@@ -49,7 +49,7 @@ class WordScrambleGameService < GameService
         scrambled = word_list.map { |k, v| v[:scrambled] }
         data = {
             event_type: 'word_update',
-            render: ApplicationController.renderer.render(partial: 'games/host/word_scramble_words', locals: {words: scrambled})
+            render: ApplicationController.renderer.render(partial: 'games/host/word_scramble/words', locals: {words: scrambled})
         }
         ActionCable.server.broadcast(game_session.game_host_channel, data)
     end

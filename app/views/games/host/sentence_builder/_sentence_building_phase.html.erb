@@ -1,0 +1,30 @@
+<div class="row text-center">
+        You have 2 minutes to build as many funny sentences as possible.
+        <br />
+        You can use the 5 words you are given, as well as 3 custom ones.
+</div>
+
+<br />
+
+<div class="row">
+    <div class="big-text text-center" id="timer-text">
+        You have <span id="time-remaining">120</span> seconds remaining!
+    </div>
+</div>
+
+<script>
+    App.gamejs = {};
+    App.gamejs.receive = function(){};
+    var time_remaining = 120;
+    setTimeout(countdown, 1000);
+
+    function countdown(){
+        if (time_remaining-- > 1){
+            $('#time-remaining').html(time_remaining);
+            setTimeout(countdown, 1000);
+        }else{
+            $('#timer-text').html("Times Up!");
+            App.game.send({phase: 'vote'});
+        }
+    }
+</script>

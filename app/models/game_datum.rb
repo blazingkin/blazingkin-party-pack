@@ -8,7 +8,7 @@ class GameDatum < ApplicationRecord
     end
 
     def self.clear_store(session_id)
-        GameDatum.stores[session_id] = nil
+        GameDatum.stores[session_id] = {}
     end
 
     def store

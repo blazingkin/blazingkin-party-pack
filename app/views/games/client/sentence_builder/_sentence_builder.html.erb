@@ -1,0 +1,22 @@
+<% words.each do |word| %>
+    <div class="btn btn-danger given-word-enter" data="<%= word %>" id=""><%= word %></div>
+    <br />
+<% end %>
+
+<div class="btn btn-default" id="building-field"></div>
+
+
+<script>
+
+    App.gamejs = {};
+    App.gamejs.receive = function(data){
+
+    };
+    current_sentence = ""
+    $('.given-word-enter').click(function (obj){
+        current_sentence = current_sentence + $(obj.target).attr('data') + ' ';
+        $('#building-field').html(current_sentence);
+    });
+
+
+</script>
