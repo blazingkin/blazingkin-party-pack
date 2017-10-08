@@ -5,13 +5,13 @@
 </div>
 <br />
 <div class="text-center">
-<span id="time-remaining">20</span> seconds left to vote!
+<h1><span id="time-remaining">15</span> seconds left to vote!</h1>
 </div>
 
 <script>
     App.game.send({next: 'start'});
     App.gamejs = {};
-    time_per_round = 20;
+    time_per_round = 15;
     time_remaining = time_per_round;
     setTimeout(countdown, 1000);
     App.gamejs.receive = function(data){

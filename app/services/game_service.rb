@@ -23,7 +23,7 @@ class GameService
 
     end
 
-    def recieve_host_data(game_session, data)
+    def receive_host_data(game_session, data)
 
     end
 

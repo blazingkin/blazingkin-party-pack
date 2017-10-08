@@ -1,6 +1,6 @@
 <div class="row title greeting">
     <div class="text-center big-font">
-        <p id="header-text">Welcome to Word Scramble! Try to guess what the other players typed!</p>
+        <h1><p id="header-text">Welcome to Word Scramble! Try to guess what the other players typed!</p></h1>
     </div>
 </div>
 
@@ -11,7 +11,7 @@
 
 <div class="row">
     <div class="col-md-9 col-sm-9">
-        <div id="world-scramble-words-container" style="word-break: break-word;">
+        <div class="bg-danger" id="world-scramble-words-container" style="word-break: break-word;">
 
         </div>
     </div>
@@ -19,10 +19,10 @@
         <% players.each do |player| %>
             <div class="row">
                 <div class="col-md-6 col-sm-6">
-                    <%= player.name %>
+                    <h3><%= player.name %></h3>
                 </div>
                 <div class="col-md-6 col-sm-6">
-                    Points <span id="player-points-<%= player.uuid %>">0</span>
+                    <h3>Points <span id="player-points-<%= player.uuid %>">0</span></h3>
                 </div>
             </div>
             <hr />

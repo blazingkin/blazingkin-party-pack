@@ -1,12 +1,14 @@
+<h2>
 <% players.each do |player| %>
     <%= player.name %> - <span id="player-score-<%= player.uuid %>">0</span>
     <br />
 <% end %>
+</h2>
 
 <br />
 
-<h2 id="countdown-timer"><span id="time-remaining"></span> seconds left!</h2>
-<h2 id="winner-display" style="display:none;">The winner is <span id="winner-field"></span></h2>
+<h1 id="countdown-timer"><span id="time-remaining"></span> seconds left!</h1>
+<h1 id="winner-display" style="display:none;">The winner is <span id="winner-field"></span></h1>
 
 <script>
     App.gamejs = {};
