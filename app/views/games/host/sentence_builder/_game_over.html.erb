@@ -1,0 +1,17 @@
+<h2>
+Game Over!
+</h2>
+<br />
+<br />
+<h2>The winner is <%= winner_name %>!</h2>
+<br />
+<script>
+    App.gamejs = {}
+    App.gamejs.receive = function(){
+
+    };
+    setTimeout(function(){
+        App.lobby_info.send({event_type: "game_over", winner: <%= winning_id %>});
+    }, 5000);
+
+</script>

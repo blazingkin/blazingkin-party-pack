@@ -1,0 +1,20 @@
+<h2 class="text-center">Vote for the funniest phrase!</h2>
+<br />
+<br />
+<div class="row text-center" id="phrase-container">
+</div>
+
+<script>
+    App.gamejs = {};
+    App.gamejs.receive = function(data){
+        if (data['event_type'] == 'sentences'){
+            $('#phrase-container').html(data['render']);         
+            $('.sentence-vote-btn').click(function(obj){
+                console.log(obj);
+                App.game.send({vote: $(obj.target).attr('data')});
+                $('#phrase-container').html('Vote Received');
+            });
+        }
+    };
+
+</script>

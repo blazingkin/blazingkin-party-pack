@@ -42,7 +42,7 @@ class GameSession < ApplicationRecord
 
     SESSION_ID_LENGTH = 5
     def self.get_unique_short_id
-        s_id = Array.new(SESSION_ID_LENGTH){[*"A".."Z", *"1".."9"].sample}.join
+        s_id = Array.new(SESSION_ID_LENGTH){[*"A".."H",*"J".."N", *"P".."Z", *"2".."9"].sample}.join
         if !GameSession.find_by(short_id: s_id)&.count.blank?
             return get_unique_short_id
         end

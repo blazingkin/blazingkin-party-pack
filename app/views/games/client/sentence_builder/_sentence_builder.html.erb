@@ -1,10 +1,30 @@
 <% words.each do |word| %>
     <div class="btn btn-danger given-word-enter" data="<%= word %>" id=""><%= word %></div>
     <br />
+    <br />
 <% end %>
+
+<i>You have <span id="custom-word-remaining-count">3</span> words remaining.<i/>
+
+<br />
+
+<%= text_field_tag 'custom_word', nil, placeholder: 'Enter a custom word', class: 'form-control', id: 'custom-word-entry' %>
+
+<br />
+
+<div class="btn btn-danger" id="submit-custom-word">Add custom word</div>
+
+<br />
+<br />
+
+<hr />
 
 <div class="btn btn-default" id="building-field"></div>
 
+<br />
+<br />
+
+<div class="btn btn-danger" id="submit-sentence">Submit your sentence!</div>
 
 <script>
 
@@ -12,10 +32,33 @@
     App.gamejs.receive = function(data){
 
     };
-    current_sentence = ""
+    custom_word_max = 3;
+    custom_word_current = custom_word_max;
+    current_sentence = '';
     $('.given-word-enter').click(function (obj){
         current_sentence = current_sentence + $(obj.target).attr('data') + ' ';
         $('#building-field').html(current_sentence);
+    });
+    $('#submit-custom-word').click(function(){
+        if (custom_word_current > 0 && $('#custom-word-entry').val() !== ''){
+            current_sentence = current_sentence + $('#custom-word-entry').val().toUpperCase().split(' ')[0] + ' ';
+            $('#custom-word-entry').val('');
+            $('#building-field').html(current_sentence);
+            custom_word_current--;
+            $('#custom-word-remaining-count').html(custom_word_current);
+        }
+    });
+    $("#custom-word-entry").keyup(function(event){
+        if(event.keyCode == 13){    // Enter
+            $("#submit-custom-word").click();
+        }
+    });
+    $('#submit-sentence').click(function(){
+        App.game.send({sentence: current_sentence});
+        current_sentence = '';
+        custom_word_current = custom_word_max;
+        $('#building-field').html('');
+        $('#custom-word-remaining-count').html(custom_word_current);
     });
 
 
