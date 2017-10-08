@@ -14,7 +14,7 @@ default: &default
   encoding: utf8
   pool: 5
   username: root
-  password:
+  password: <%= ENV['BLAZINGKINPARTYPACK_DATABASE_PASSWORD'] %>
   host: localhost
 
 development:
@@ -51,4 +51,4 @@ production:
   <<: *default
   database: blazingkin-party-pack_production
   username: blazingkin-party-pack
-  password: <%= ENV['BLAZINGKIN-PARTY-PACK_DATABASE_PASSWORD'] %>
+  password: <%= ENV['BLAZINGKINPARTYPACK_DATABASE_PASSWORD'] %>
