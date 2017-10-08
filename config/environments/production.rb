@@ -3,7 +3,7 @@ Rails.application.configure do
 
   # The ActionCable connection for localhost uses localhost (what a surprise)
   Rails.application.configure do 
-    config.action_cable.url = "ws://blazingk.in:80/cable"
+    config.action_cable.url = "ws://blazingkin.com:80/cable"
   end 
 
   # Code is not reloaded between requests.
