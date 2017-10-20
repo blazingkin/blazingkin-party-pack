@@ -18,6 +18,7 @@
     App.gamejs = {};
     App.gamejs.receive = function(){};
     var time_remaining = 120;
+    clearTimeout(countdown);
     setTimeout(countdown, 1000);
 
     function countdown(){
@@ -27,6 +28,7 @@
         }else{
             $('#timer-text').html("Times Up!");
             App.game.send({phase: 'vote'});
+            clearTimeout(countdown);
         }
     }
 </script>

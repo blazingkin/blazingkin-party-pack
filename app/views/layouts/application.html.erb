@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Blazingkin Party Pack</title>
+    <title><%= content_for?(:title) ? yield(:title) : 'Blazingkin Party Pack' %></title>
     <%= csrf_meta_tags %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -9,7 +9,7 @@
   </head>
 
   <body>
-    <div class="container-fluid">
+    <div class="<%= content_for?(:container) ? yield(:container) : 'container-fluid' %>">
       <% flash.each do |key, value| %>
         <br />
         <div class="alert alert-<%= key %>"><%= value %></div>

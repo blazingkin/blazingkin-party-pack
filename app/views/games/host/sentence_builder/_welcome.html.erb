@@ -23,6 +23,7 @@
     App.gamejs = {};
     App.gamejs.receive = function(){};
     var time_remaining = 45;
+    clearTimeout(countdown);
     setTimeout(countdown, 1000);
 
     function countdown(){

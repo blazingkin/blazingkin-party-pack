@@ -1,17 +1,16 @@
-<div class="text-center">
-    <div class="row">
-        <div class="col-md-4 col-sm-4">
+
+    <div class="row vertical-center">
+        <div class="col-md-4 col-sm-2 col-xs-2">
         </div>
-        <div class="col-md-4 col-sm-4">
-            <div class="form-group">
+        <div class="col-md-4 col-sm-8 col-xs-9">
+            <div class="text-center form-group">
                 <label for="game-id">Game ID:</label>
-                <input type="text" class="form-control" id="game-id"></input>
+                <input type="text" class="form-control input-lg" id="game-id" style="height: 40vh;"></input>
                 <br />
-                <%= submit_tag 'Join', class: 'btn btn-danger btn-block text-white', id: 'client-connect-to-game-with-id' %>
+                <%= submit_tag 'Join', class: 'btn btn-danger btn-block text-white', id: 'client-connect-to-game-with-id', style: "height: 20vh;" %>
             </div>
         </div>
     </div>
-</div>
 
 <script>
 $('#client-connect-to-game-with-id').click(function() {
