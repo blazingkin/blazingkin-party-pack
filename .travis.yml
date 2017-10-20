@@ -2,8 +2,14 @@ language:
   ruby
 rvm:
   2.3.4
+services:
+  - mysql
+before_install:
+  - mysql -e 'CREATE DATABASE blazingkin-party-pack_test;'
 install: 
   - gem install rails
   - bundle install
 script:
+  - brakeman
+  - rails db:migrate
   - rails t
