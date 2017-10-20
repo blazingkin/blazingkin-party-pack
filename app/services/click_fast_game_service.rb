@@ -10,8 +10,8 @@ class ClickFastGameService < GameService
 
     def receive_client_data(game_session, data, player)
         if data['click']
-            game_session.game_datum.store[player.uuid.to_s]  ||= 0
-            score = game_session.game_datum.store[player.uuid.to_s] += 1
+            game_session.game_datum[player.uuid.to_s]  ||= 0
+            score = game_session.game_datum[player.uuid.to_s] += 1
             ActionCable.server.broadcast(game_session.game_host_channel,
              {  data_type: 'click',
                 player_uuid: player.uuid,
@@ -25,11 +25,7 @@ class ClickFastGameService < GameService
     end
 
     def init_game(game_session)
-        game_session.reload
-        GameDatum.find_by(game_session: game_session.id)&.destroy!
-        game_datum = GameDatum.create({game_type: 'click_fast'})
-        game_session.update({game_datum: game_datum})
-        game_session.game_datum.store = {}
+        game_session.game_datum = {}
     end
 
 end

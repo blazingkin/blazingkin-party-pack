@@ -23,6 +23,9 @@ class LobbyInfoChannel < ApplicationCable::Channel
     elsif payload['event_type'] == 'start_game'
       if current_player.is_a? GameSession
         game = GameService.get_service(payload['game'])
+        current_player.game_datum = {}
+        current_player.game_type = payload['game']
+        current_player.save
         game.init_game(current_player)
         event = {
           event_type: 'start_game',
@@ -44,8 +47,7 @@ class LobbyInfoChannel < ApplicationCable::Channel
           winner.score += 1
           winner.save
         end
-        GameDatum.clear_store(current_player.id)
-        current_player.game_datum.destroy!
+        current_player.game_datum = {}
         current_player.players.each do |pl|
           player_event = {
             event_type: 'reload_lobby',
@@ -60,7 +62,6 @@ class LobbyInfoChannel < ApplicationCable::Channel
                     locals: {game_session: current_player})
         }
         ActionCable.server.broadcast(current_player.group_lobby_channel, host_event)
-
       end
     end
   end

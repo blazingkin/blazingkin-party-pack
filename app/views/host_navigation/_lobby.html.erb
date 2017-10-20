@@ -7,16 +7,13 @@
 </div>
 <br />
 <div class="row">
-    <div class="col-md-3">
-        <div class="btn btn-danger" id="start-random-game-button">Random Game!</div>
-    </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="btn btn-danger" id="start-click-game-button">Click Quick</div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="btn btn-danger" id="start-sentence-builder-game-button">Sentence Builder</div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="btn btn-danger" id="start-scramble-game-button">Word Scramble</div>
     </div>
 </div>
@@ -24,9 +21,6 @@
 <script>
     $(document).on('turbolinks:load', function(){
         create_client_lobby_connection('<%= game_session.short_id %>');
-    });
-    $('#start-random-game-button').click(function(){
-        App.lobby_info.send({event_type: 'start_game', game: 'random'});
     });
     $('#start-click-game-button').click(function(){
         App.lobby_info.send({event_type: 'start_game', game: 'click_fast'});

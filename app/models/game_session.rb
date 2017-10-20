@@ -1,8 +1,20 @@
 class GameSession < ApplicationRecord
     validates :short_id, presence: true, uniqueness: true
     has_many :players, dependent: :destroy
-    has_one :game_datum, dependent: :destroy
     after_touch :clear_association_cache
+
+    class << self
+        attr_accessor :stores
+        GameSession.stores = {}
+    end
+
+    def game_datum=(data)
+        GameSession.stores[self.id] = data
+    end
+
+    def game_datum
+        GameSession.stores[self.id]
+    end
 
     def game_session
         self
@@ -20,10 +32,6 @@ class GameSession < ApplicationRecord
         group_lobby_channel
     end
 
-    def game_type
-        game_datum.game_type
-    end
-
     def lobby_channel
         "lobby-#{short_id}:info"
     end
@@ -37,7 +45,8 @@ class GameSession < ApplicationRecord
     end
 
     def game_service
-        GameService.get_service(game_datum.game_type)
+        self.reload
+        GameService.get_service(game_type)
     end
 
     SESSION_ID_LENGTH = 5
