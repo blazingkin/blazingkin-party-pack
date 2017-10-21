@@ -1,24 +1,23 @@
-# README
+[![Build Status](https://travis-ci.org/blazingkin/blazingkin-party-pack.svg?branch=master)](https://travis-ci.org/blazingkin/blazingkin-party-pack)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The blazingkin party pack!
 
-Things you may want to cover:
+# Ruby Version
+ ~> 2.3
 
-* Ruby version
+# Database notes
+    * Currently using mysql2
+    * Databases are named `blazingkin-party-pack_X` (where X is test, development, or production)
+    * Database connects using user 'root' and whatever password is set in the BLAZINGKINPARTYPACK_DATABASE_PASSWORD environment variable
 
-* System dependencies
+# Action Cable Store
+    Action Cable is currently storing everything in memory. This is *bad*.
+    Before moving to production, this will need to be changed to Redis
 
-* Configuration
+# Webserver
+    - Puma (ActionCable needs a multithreaded server)
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# Word2Vec Data.
+    - A 'gutenberg-vector.bin' file is needed in the data/ directory
+    - This can be generated using Google's word2vec
+    - The current one I'm using is ~1Gb, so no can git

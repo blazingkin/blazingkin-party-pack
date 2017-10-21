@@ -15,6 +15,7 @@
 
 # Ignore secrets
 /secrets/*
+/data/*
 /config/database.yml
 /public/assets/*
 

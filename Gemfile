@@ -7,7 +7,11 @@ end
 
 # Don't Inject Me Bro
 gem 'brakeman'
+
 gem 'redis'
+
+gem 'word2vec-ruby', git: 'https://github.com/blazingkin/word2vec-ruby'
+
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
