@@ -2,17 +2,16 @@
 class CloseWordGameService < GameService
 
     def render_game_client(game_session, renderer)
-        case game_session.game_datum[:phase]
-            when nil, 'distance'
-                renderer.render partial: 'games/client/close_words/display_distance'                
-            when 'inverse_distance'
-
-            when 'word_math'
-        end
+        renderer.render partial: 'games/client/close_words/display_distance'                
     end
 
     def render_game_host(game_session, renderer)
-        renderer.render partial: 'games/host/close_words/distance'
+        case game_session.game_datum[:phase]
+        when nil, 'distance'
+            renderer.render partial: 'games/host/close_words/distance'
+        when 'inverse_distance'
+            renderer.render partial: 'games/host/close_words/inv_distance'
+        end
     end
 
     def receive_client_data(game_session, data, player)
@@ -20,7 +19,7 @@ class CloseWordGameService < GameService
         when 'distance'
             handle_player_distance_submission(game_session, player, data['guess'].downcase)
         when 'inverse_distance'
-
+            handle_player_distance_submission(game_session, player, data['guess'].downcase, true)
         when 'word_math'
 
         end
@@ -34,6 +33,10 @@ class CloseWordGameService < GameService
             else
                 game_session.game_datum[:phase] = 'word_math'
             end
+            ActionCable.server.broadcast(game_session.game_host_channel, {
+                event_type: 'change_view',
+                render: render_game_host(game_session, ApplicationController.renderer)
+            })
         when 'start'
             word_dist_new_word(game_session)
         end
@@ -61,7 +64,7 @@ class CloseWordGameService < GameService
         })
     end
 
-    def handle_player_distance_submission(game_session, player, guess)
+    def handle_player_distance_submission(game_session, player, guess, inverse=false)
         game_session.game_datum[:players].each do |p|
             if player.uuid == p[:uuid]
                 unless p[:voted]
@@ -85,15 +88,19 @@ class CloseWordGameService < GameService
         end
         players_who_voted = game_session.game_datum[:players].select {|p| p[:voted]}
         if players_who_voted.count == game_session.game_datum[:players].count
-            player_distance_end_round game_session
+            player_distance_end_round game_session, inverse
         end
     end
 
-    def player_distance_end_round(game_session)
+    def player_distance_end_round(game_session, inverse=false)
         winner = nil
-        winner_distance = 100
+        winner_distance = inverse ? 0 : 100
+        less_than = lambda {|x,y| x < y}
+        if inverse
+            less_than = lambda {|x, y| y < x}
+        end
         game_session.game_datum[:players].each do |p|
-            if (p[:distance] < winner_distance)
+            if less_than.call(p[:distance], winner_distance)
                 winner = p
                 winner_distance = p[:distance]
             end
@@ -107,7 +114,6 @@ class CloseWordGameService < GameService
         })
         word_dist_new_word(game_session)
     end
-
 
 
 end
