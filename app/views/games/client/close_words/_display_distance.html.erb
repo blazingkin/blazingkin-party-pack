@@ -23,6 +23,7 @@
     };
     $('#get-distance').click(function(){
         App.game.send({guess: $('#word').val()});
+        $('#word').val('');
     });
 
 </script>

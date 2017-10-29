@@ -1,0 +1,33 @@
+<!-- Needs Local of Players !-->
+<div class="score-table">
+    <div class="row">
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            Name
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            Score
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            Guess
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            Distance
+        </div>
+    </div>
+    <% players.each do |p|%>
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= p[:name] %>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= p[:points] %>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= p[:guess] %>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= p[:distance].round(3) %>
+            </div>
+        </div>
+    <% end %>    
+</div>

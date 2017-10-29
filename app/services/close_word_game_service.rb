@@ -18,7 +18,7 @@ class CloseWordGameService < GameService
     def receive_client_data(game_session, data, player)
         case game_session.game_datum[:phase]
         when 'distance'
-            handle_player_distance_submission(game_session, player, data['guess'])
+            handle_player_distance_submission(game_session, player, data['guess'].downcase)
         when 'inverse_distance'
 
         when 'word_math'
@@ -45,6 +45,7 @@ class CloseWordGameService < GameService
          {name: p.name,
           uuid: p.uuid,
           points: 0,
+          guess: '',
           voted: false,
           distance: -1}
         }
@@ -69,11 +70,42 @@ class CloseWordGameService < GameService
                             error: "Sorry, I don't know that word"
                         })
                     else
-
+                        if guess.pluralize != game_session.game_datum[:word].pluralize
+                            p[:voted] = true
+                            p[:distance] = WordToVecService.vector_distance(guess, game_session.game_datum[:word])
+                            p[:guess] = guess
+                        else
+                            ActionCable.server.broadcast(player.game_personal_channel, {
+                                error: "Nice try, that doesn't work"
+                            })
+                        end
                     end
                 end
             end
         end
+        players_who_voted = game_session.game_datum[:players].select {|p| p[:voted]}
+        if players_who_voted.count == game_session.game_datum[:players].count
+            player_distance_end_round game_session
+        end
+    end
+
+    def player_distance_end_round(game_session)
+        winner = nil
+        winner_distance = 100
+        game_session.game_datum[:players].each do |p|
+            if (p[:distance] < winner_distance)
+                winner = p
+                winner_distance = p[:distance]
+            end
+            p[:voted] = false
+        end
+        if winner
+            winner[:points] += 1
+        end
+        ActionCable.server.broadcast(game_session.game_host_channel, {
+            results: ApplicationController.renderer.render(partial: 'games/host/close_words/scores', locals: {players: game_session.game_datum[:players]})
+        })
+        word_dist_new_word(game_session)
     end
 
 
