@@ -18,9 +18,9 @@ class WordScrambleGameService < GameService
                 if is_word_by_player?(game_session, word, player)
                     # No points for you
                 else
-                    points_for_player(game_session, player)
+                    points_for_player(game_session, player, 2)
                     orig_player = remove_word_from_list(game_session, word)
-                    points_for_player(game_session, orig_player)
+                    points_for_player(game_session, orig_player, 1)
                 end
             else
                 add_to_word_list(game_session, word, player)
@@ -74,11 +74,11 @@ class WordScrambleGameService < GameService
         false
     end
 
-    def points_for_player(game_session, player)
+    def points_for_player(game_session, player, num_points)
         game_session.game_datum['players'] ||= {}
         game_session.game_datum['players'][player.uuid] ||= {}
         game_session.game_datum['players'][player.uuid]['points'] ||= 0
-        game_session.game_datum['players'][player.uuid]['points'] += 1
+        game_session.game_datum['players'][player.uuid]['points'] += num_points
         data = {
             event_type: 'player_points',
             player_uuid: player.uuid,

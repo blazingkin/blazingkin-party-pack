@@ -3,7 +3,8 @@ class GameService
     GAME_SERVICES = {
         'click_fast' => ClickFastGameService.new,
         'word_scramble' => WordScrambleGameService.new,
-        'sentence_builder' => SentenceBuilderGameService.new
+        'sentence_builder' => SentenceBuilderGameService.new,
+        'close_word' => CloseWordGameService.new
     }
 
     def self.get_service(game_name)
