@@ -10,9 +10,19 @@
     </div>
 </div>
 
+<br />
+<div class="row">
+    <span id="results"></span>
+</div>
+
 <script>
     App.gamejs = {}
     App.gamejs.receive = function(data){
-        $('#word').html(data['word']);
+        if (data['word']){
+            $('#word').html(data['word']);
+        }else if (data['results']){
+            $('#results').html(data['results']);
+        }
     };
+    App.game.send({type: 'start'});
 </script>

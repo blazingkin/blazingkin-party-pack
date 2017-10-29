@@ -21,4 +21,8 @@ class WordToVecService
         MODEL.vocabulary[rand(10000)]
     end
 
+    def self.has_word?(word)
+        MODEL.index(word) != nil
+    end
+
 end

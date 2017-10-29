@@ -1,20 +1,28 @@
-
-<%= text_field_tag 'word1', nil, id: 'word-1', class: 'form-control' %>
-<br />
-<%= text_field_tag 'word2', nil, id: 'word-2', class: 'form-control' %>
-<br />
-<div class="btn btn-danger" id="get-distance">Get Distance</div>
-<br />
-<span id="dist-display"></span>
+<div class="row bg-warning" id="warning-display" style="display:none;">
+    <h2 class="text-center" id="warning-text"></h2>
+</div>
+<div class="row vertical-center">
+    <div class="col-md-1 col-sm-1 col-xs-1"></div>
+    <div class="form-group col-sm-10 col-md-10 col-xs-10">
+    <%= text_field_tag 'word1', nil, id: 'word', class: 'form-control input-lg', style: 'height: 40vh;' %>
+        <br />
+        <div class="btn btn-danger btn-block" id="get-distance" style="height: 20vh;">Guess</div>    
+    </div>
+</div>
 
 <script>
     App.gamejs = {}
     App.gamejs.receive = function(data){
-        $('#dist-display').html(data['render']);
+        if (data['error']){
+            $('#warning-text').html(data['error']);
+            $('#warning-display').show();
+            setTimeout(function(){
+                $('#warning-display').hide();
+            }, 3000);
+        }
     };
     $('#get-distance').click(function(){
-        App.game.send({word1: $('#word-1').val(),
-                       word2: $('#word-2').val()});
+        App.game.send({guess: $('#word').val()});
     });
 
 </script>
