@@ -96,9 +96,7 @@ class CloseWordGameService < GameService
         winner = nil
         winner_distance = inverse ? 0 : 100
         less_than = lambda {|x,y| x < y}
-        if inverse
-            less_than = lambda {|x, y| y < x}
-        end
+        less_than = lambda {|x, y| y < x} if inverse
         game_session.game_datum[:players].each do |p|
             if less_than.call(p[:distance], winner_distance)
                 winner = p
@@ -106,9 +104,7 @@ class CloseWordGameService < GameService
             end
             p[:voted] = false
         end
-        if winner
-            winner[:points] += 1
-        end
+        winner[:points] += 1 if winner
         ActionCable.server.broadcast(game_session.game_host_channel, {
             results: ApplicationController.renderer.render(partial: 'games/host/close_words/scores', locals: {players: game_session.game_datum[:players]})
         })
