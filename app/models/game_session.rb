@@ -49,9 +49,44 @@ class GameSession < ApplicationRecord
         GameService.get_service(game_type)
     end
 
+    def broadcast(opts)
+        broadcast_host(opts)
+        broadcast_players(opts)
+    end
+
+    def broadcast_host(opts)
+        ActionCable.server.broadcast(game_host_channel, opts)
+    end
+
+    def broadcast_players(opts)
+        ActionCable.server.broadcast(game_client_channel, opts)
+    end
+
+    def show(host_view, player_view)
+        show_host(host_view)
+        show_players(player_view)
+    end
+
+    def show_host(view, opts={})
+        to_render = opts.merge({partial: view})
+        ActionCable.server.broadcast(game_host_channel, {
+            event_type: 'change_view',
+            render: ApplicationController.renderer.render(to_render)
+        })
+    end
+
+    def show_players(view, opts={})
+        to_render = opts.merge({partial: view})
+        ActionCable.server.broadcast(game_client_channel, {
+            event_type: 'change_view',
+            render: ApplicationController.renderer.render(to_render)
+        })
+    end
+
     SESSION_ID_LENGTH = 5
+    SESSION_CHARACTERS_TO_CHOOSE = [*"A".."H",*"J".."N", *"P".."Z", *"2".."9"]
     def self.get_unique_short_id
-        s_id = Array.new(SESSION_ID_LENGTH){[*"A".."H",*"J".."N", *"P".."Z", *"2".."9"].sample}.join
+        s_id = Array.new(SESSION_ID_LENGTH){SESSION_CHARACTERS_TO_CHOOSE.sample}.join
         if !GameSession.find_by(short_id: s_id)&.count.blank?
             return get_unique_short_id
         end

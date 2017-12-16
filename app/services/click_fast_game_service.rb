@@ -12,10 +12,10 @@ class ClickFastGameService < GameService
         if data['click']
             game_session.game_datum[player.uuid.to_s]  ||= 0
             score = game_session.game_datum[player.uuid.to_s] += 1
-            ActionCable.server.broadcast(game_session.game_host_channel,
-             {  data_type: 'click',
-                player_uuid: player.uuid,
-                player_score: score
+            game_session.broadcast_host({
+              data_type: 'click',
+              player_uuid: player.uuid,
+              player_score: score
             })
         end
     end

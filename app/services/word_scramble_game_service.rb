@@ -43,11 +43,10 @@ class WordScrambleGameService < GameService
     def refresh_host_word_list(game_session)
         word_list = game_session.game_datum['words'] || {}
         scrambled = word_list.map { |k, v| v[:scrambled] }
-        data = {
+        game_session.broadcast_host({
             event_type: 'word_update',
             render: ApplicationController.renderer.render(partial: 'games/host/word_scramble/words', locals: {words: scrambled})
-        }
-        ActionCable.server.broadcast(game_session.game_host_channel, data)
+        })
     end
 
     def is_word_by_player?(game_session, word, player)
@@ -79,13 +78,12 @@ class WordScrambleGameService < GameService
         game_session.game_datum['players'][player.uuid] ||= {}
         game_session.game_datum['players'][player.uuid]['points'] ||= 0
         game_session.game_datum['players'][player.uuid]['points'] += num_points
-        data = {
+        game_session.broadcast_host({
             event_type: 'player_points',
             player_uuid: player.uuid,
             name: player.name,
             points: game_session.game_datum['players'][player.uuid]['points']
-        }
-        ActionCable.server.broadcast(game_session.game_host_channel, data)
+        })
     end
 
 end

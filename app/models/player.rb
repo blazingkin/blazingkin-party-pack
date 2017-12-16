@@ -44,6 +44,14 @@ class Player < ApplicationRecord
         game_session.game_service
     end
 
+    def show(view, opts={})
+        to_render = opts.merge({partial: view})
+        ActionCable.server.broadcast(game_personal_channel, {
+            event_type: 'change_view',
+            render: ApplicationController.renderer.render(to_render)
+        })
+    end
+
     RAND_MAX = 9999999
     def self.get_unique_id
         uuid = Random.rand(RAND_MAX)

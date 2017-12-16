@@ -25,7 +25,7 @@ class SentenceBuilderGameService < GameService
             if data['results']
                 winning_id = round_winner(game_session)        
                 sentences = game_session.game_datum[:current_sentences].map { |s| s[:sentence] }
-                ActionCable.server.broadcast(game_session.game_host_channel, {
+                game_session.broadcast_host({
                     event_type: 'sentences',
                     render: ApplicationController.renderer.render(
                         partial: 'games/shared/sentence_builder/vote',
@@ -44,36 +44,17 @@ class SentenceBuilderGameService < GameService
                     game_session.game_datum[:phase] = 'build'
                     game_session.game_datum[:words] = game_session.game_datum[:words].uniq
                     game_session.game_datum[:sentences] = []
-                    ActionCable.server.broadcast(game_session.game_host_channel, {
-                        event_type: 'change_view',
-                        render: ApplicationController.renderer.render(
-                            partial: 'games/host/sentence_builder/sentence_building_phase'
-                        )
-                    })
+                    game_session.show_host('games/host/sentence_builder/sentence_building_phase')
                     game_session.players.each do |player|
-                        ActionCable.server.broadcast(player.game_personal_channel, {
-                            event_type: 'change_view',
-                            render: ApplicationController.renderer.render(
-                                partial: 'games/client/sentence_builder/sentence_builder',
-                                locals: {words: game_session.game_datum[:words].sample(5)})
-                        })
+                        player.show('games/client/sentence_builder/sentence_builder',
+                                    locals: {words: game_session.game_datum[:words].sample(5)})
                     end
                 elsif data['phase'] == 'vote'
                     game_session.game_datum[:phase] = 'vote'
                     game_session.game_datum[:points] = {}
                     game_session.game_datum[:sentences].shuffle!
-                    ActionCable.server.broadcast(game_session.game_host_channel, {
-                        event_type: 'change_view',
-                        render: ApplicationController.renderer.render(
-                            partial: 'games/host/sentence_builder/vote_phase'
-                        )
-                    })
-                    ActionCable.server.broadcast(game_session.game_client_channel, {
-                        event_type: 'change_view',
-                        render: ApplicationController.renderer.render(
-                            partial: 'games/client/sentence_builder/vote'
-                        )
-                    })
+                    game_session.show_host('games/host/sentence_builder/vote_phase')
+                    game_session.show_players('games/client/sentence_builder/vote')
                 end
             elsif data['next'] && game_session.game_datum[:phase] == 'vote'
                 sentences = game_session.game_datum[:sentences].slice!(0, 4)
@@ -88,14 +69,7 @@ class SentenceBuilderGameService < GameService
                         }
                     end
                 end
-                ActionCable.server.broadcast(game_session.game_host_channel, {
-                    event_type: 'sentences',
-                    render: ApplicationController.renderer.render(
-                        partial: 'games/shared/sentence_builder/vote',
-                        locals: {sentences: sentences, winner: nil}
-                    )
-                })
-                ActionCable.server.broadcast(game_session.game_client_channel, {
+                game_session.broadcast({
                     event_type: 'sentences',
                     render: ApplicationController.renderer.render(
                         partial: 'games/shared/sentence_builder/vote',
@@ -129,13 +103,8 @@ class SentenceBuilderGameService < GameService
         def send_game_over(game_session)
             winning_id = get_winner(game_session)
             winner_name = Player.find_by({uuid: winning_id})&.name || "No One!"
-            ActionCable.server.broadcast(game_session.game_host_channel, {
-                event_type: 'change_view',
-                render: ApplicationController.renderer.render(
-                    partial: 'games/host/sentence_builder/game_over',
-                    locals: {winner_name: winner_name, winning_id: winning_id}
-                )
-            })
+            game_session.show_host('games/host/sentence_builder/game_over',
+                                   locals: {winner_name: winner_name, winning_id: winning_id})
         end
 
         def round_winner(game_session)
