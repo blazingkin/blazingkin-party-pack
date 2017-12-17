@@ -52,6 +52,10 @@ class Player < ApplicationRecord
         })
     end
 
+    def broadcast(data)
+        ActionCable.server.broadcast(game_personal_channel, data)
+    end
+
     RAND_MAX = 9999999
     def self.get_unique_id
         uuid = Random.rand(RAND_MAX)

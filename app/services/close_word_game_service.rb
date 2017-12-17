@@ -5,13 +5,17 @@ class CloseWordGameService < GameService
         renderer.render partial: 'games/client/close_words/display_distance'                
     end
 
-    def render_game_host(game_session, renderer)
+    def host_view(game_session)
         case game_session.game_datum[:phase]
         when nil, 'distance'
-            renderer.render partial: 'games/host/close_words/distance'
+            'games/host/close_words/distance'
         when 'inverse_distance'
-            renderer.render partial: 'games/host/close_words/inv_distance'
+            'games/host/close_words/inv_distance'
         end
+    end
+
+    def render_game_host(game_session, renderer)
+        renderer.render(partial: host_view(game_session))
     end
 
     def receive_client_data(game_session, data, player)
@@ -33,10 +37,7 @@ class CloseWordGameService < GameService
             else
                 game_session.game_datum[:phase] = 'word_math'
             end
-            ActionCable.server.broadcast(game_session.game_host_channel, {
-                event_type: 'change_view',
-                render: render_game_host(game_session, ApplicationController.renderer)
-            })
+            game_session.show_host(host_view(game_session))
         when 'start'
             word_dist_new_word(game_session)
         end
@@ -59,7 +60,7 @@ class CloseWordGameService < GameService
 
     def word_dist_new_word(game_session)
         game_session.game_datum[:word] = WordToVecService.get_word
-        ActionCable.server.broadcast(game_session.game_host_channel,{
+        game_session.broadcast_host({
             word: game_session.game_datum[:word].upcase
         })
     end
@@ -69,18 +70,14 @@ class CloseWordGameService < GameService
             if player.uuid == p[:uuid]
                 unless p[:voted]
                     if !WordToVecService.has_word? guess
-                        ActionCable.server.broadcast(player.game_personal_channel, {
-                            error: "Sorry, I don't know that word"
-                        })
+                        player.broadcast({error: "Sorry, I don't know that word"})
                     else
                         if guess.pluralize != game_session.game_datum[:word].pluralize
                             p[:voted] = true
                             p[:distance] = WordToVecService.vector_distance(guess, game_session.game_datum[:word])
                             p[:guess] = guess
                         else
-                            ActionCable.server.broadcast(player.game_personal_channel, {
-                                error: "Nice try, that doesn't work"
-                            })
+                            player.broadcast({error: "Nice try, that doesn't work"})
                         end
                     end
                 end
@@ -105,8 +102,9 @@ class CloseWordGameService < GameService
             p[:voted] = false
         end
         winner[:points] += 1 if winner
-        ActionCable.server.broadcast(game_session.game_host_channel, {
-            results: ApplicationController.renderer.render(partial: 'games/host/close_words/scores', locals: {players: game_session.game_datum[:players]})
+        game_session.broadcast_host({
+            results: ApplicationController.renderer.render(partial: 'games/host/close_words/scores',
+                                                           locals: {players: game_session.game_datum[:players]})
         })
         word_dist_new_word(game_session)
     end
