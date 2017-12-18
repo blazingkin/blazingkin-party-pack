@@ -39,4 +39,10 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  require 'capybara/poltergeist'
+  Capybara.server = :puma # Until your setup is working
+  Capybara.server = :puma, { Silent: true } # To clean up your test output
+  Capybara.javascript_driver = :poltergeist
+
 end

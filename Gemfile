@@ -9,8 +9,8 @@ end
 gem 'brakeman'
 
 gem 'redis'
-
-gem 'word2vec-ruby', git: 'https://github.com/blazingkin/word2vec-ruby'
+# Word to vectors
+#gem 'word2vec-ruby', git: 'https://github.com/blazingkin/word2vec-ruby'
 
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
@@ -29,7 +29,7 @@ gem 'coffee-rails', '~> 4.2'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-#make things look pretty
+# make things look pretty
 gem 'bootstrap', '~> 4.0.0.beta'
 
 # Use jquery as the JavaScript library
@@ -45,6 +45,11 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+group :test do
+  gem 'capybara'
+  gem 'poltergeist'
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
