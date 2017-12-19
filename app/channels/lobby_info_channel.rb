@@ -42,7 +42,7 @@ class LobbyInfoChannel < ApplicationCable::Channel
       end
     elsif payload['event_type'] == 'game_over'
       if current_player.is_a? GameSession
-        if !payload['winner'].blank?
+        if payload['winner'].present?
           winner = Player.find_by({uuid: payload['winner']})
           winner.score += 1
           winner.save

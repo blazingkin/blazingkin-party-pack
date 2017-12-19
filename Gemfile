@@ -10,7 +10,7 @@ gem 'brakeman'
 
 gem 'redis'
 # Word to vectors
-#gem 'word2vec-ruby', git: 'https://github.com/blazingkin/word2vec-ruby'
+gem 'word2vec-ruby', git: 'https://github.com/blazingkin/word2vec-ruby'
 
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'

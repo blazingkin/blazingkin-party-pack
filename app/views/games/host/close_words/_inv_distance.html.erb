@@ -35,11 +35,12 @@
     App.game.send({type: 'start'});
     function count_down_distance(){
         if (time_left-- <= 0){
-            App.game.send({type: 'change_phase'});
+            App.lobby_info.send({event_type: "game_over"});
         }else{
             $('#time-left').html(time_left);
             setTimeout(count_down_distance, 1000);
         }
     }
+    clearTimeout(count_down_distance);
     setTimeout(count_down_distance, 1000);
 </script>
