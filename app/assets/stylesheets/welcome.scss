@@ -1,3 +1,42 @@
 // Place all the styles related to the Welcome controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+// Mobile
+@media (max-width: 1030px){
+    div {
+        font-size: 5vw;
+    }
+    p {
+        font-size: 5vw;
+    }
+    #rename-submit {
+        font-size: 5vw;
+        height: 5vh;
+    }
+    #rename-entry {
+        font-size: 5vw;
+        height: 5vh;
+    }
+    #wordscram-tf {
+        font-size: 5vw;
+        height: 30vh;
+    }
+    #wordscram-btn {
+        font-size: 5vw;
+        height: 30vh;
+    }
+    #get-distance {
+        font-size: 5vw;
+    }
+
+}
+
+@media (min-width: 1031px){
+    div {
+        font-size: 1vw;
+    }
+    p {
+        font-size: 1vw;
+    }
+}
