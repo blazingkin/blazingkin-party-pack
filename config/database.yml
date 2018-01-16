@@ -50,5 +50,3 @@ test:
 production:
   <<: *default
   database: blazingkin-party-pack_production
-  username: blazingkin-party-pack
-  password: <%= ENV['BLAZINGKINPARTYPACK_DATABASE_PASSWORD'] %>
