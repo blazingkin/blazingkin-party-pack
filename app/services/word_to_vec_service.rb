@@ -1,7 +1,7 @@
 require 'word2vec/native_model'
 class WordToVecService
 
-    MODEL = Word2Vec::NativeModel.parse_file(ENV['GUTENBERG_VECTOR_LOCATION'])
+    MODEL = Word2Vec::NativeModel.parse_file(ENV['GUTENBERG_VECTOR_LOCATION']) if ENV['GUTENBERG_VECTOR_LOCATION'].present?
 
     def self.nearest_neighbors(word)
         MODEL.nearest_neighbors([word])
