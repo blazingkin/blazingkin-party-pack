@@ -35,12 +35,13 @@
     App.game.send({type: 'start'});
     function count_down_distance(){
         if (time_left-- <= 0){
+            clearTimeout(timer_id);
             App.lobby_info.send({event_type: "game_over"});
         }else{
             $('#time-left').html(time_left);
-            setTimeout(count_down_distance, 1000);
+            clearTimeout(timer_id);
+            timer_id = setTimeout(count_down_distance, 1000);
         }
     }
-    clearTimeout(count_down_distance);
-    setTimeout(count_down_distance, 1000);
+    var timer_id = setTimeout(count_down_distance, 1000);
 </script>
