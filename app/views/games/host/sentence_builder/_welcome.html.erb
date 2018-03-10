@@ -23,15 +23,16 @@
     App.gamejs = {};
     App.gamejs.receive = function(){};
     var time_remaining = 45;
-    clearTimeout(countdown);
-    setTimeout(countdown, 1000);
+    var timeout_id = setTimeout(countdown, 1000);
 
     function countdown(){
         if (time_remaining-- > 1){
             $('#time-remaining').html(time_remaining);
-            setTimeout(countdown, 1000);
+            clearTimeout(timeout_id);
+            timeout_id = setTimeout(countdown, 1000);
         }else{
             $('#timer-text').html("Times Up!");
+            clearTimeout(timeout_id);
             App.game.send({phase: 'build'});
         }
     }

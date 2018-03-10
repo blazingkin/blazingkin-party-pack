@@ -1,5 +1,9 @@
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+</head>
+
 <% words.each do |word| %>
-    <div class="btn btn-danger given-word-enter" data="<%= word %>" id=""><%= word %></div>
+    <div class="btn btn-danger given-word-enter" data="<%= word %>" id="" style="font-size: 4vh;"><%= word %></div>
     <br />
     <br />
 <% end %>
@@ -8,23 +12,23 @@
 
 <br />
 
-<%= text_field_tag 'custom_word', nil, placeholder: 'Enter a custom word', class: 'form-control', id: 'custom-word-entry' %>
+<%= text_field_tag 'custom_word', nil, placeholder: 'Enter a custom word', class: 'form-control', style: 'font-size: 4vh; height: 6vh;', id: 'custom-word-entry' %>
 
 <br />
 
-<div class="btn btn-danger" id="submit-custom-word">Add custom word</div>
+<div class="btn btn-danger" id="submit-custom-word" style="font-size: 4vh;">Add custom word</div>
 
 <br />
 <br />
 
 <hr />
 
-<div class="btn btn-default" id="building-field"></div>
+<span id="building-field" style="font-size: 4vh; overflow-wrap: break-word;"></span>
 
 <br />
 <br />
 
-<div class="btn btn-danger" id="submit-sentence">Submit your sentence!</div>
+<div class="btn btn-danger" id="submit-sentence" style="font-size: 4vh;">Submit your sentence!</div>
 
 <script>
 

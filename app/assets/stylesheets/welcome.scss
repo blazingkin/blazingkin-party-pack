@@ -29,7 +29,10 @@
     #get-distance {
         font-size: 5vw;
     }
-
+    .lg-mobile-font {
+        font-size: 5vw !important;
+        overflow-wrap: break-word;
+    }
 }
 
 @media (min-width: 1031px){

@@ -6,11 +6,11 @@
 </style>
 <div class="row">
 <div class="col-md-5 col-sm-5 col-xs-5 pull-left">
-    <%= button_to "Connect as a player", client_url, method: :get, class:"btn btn-danger btn-large", style:"height: 100vh; width: 100%;", id: 'join_game_bttn' %>
+    <%= button_to "Player", client_url, method: :get, class:"btn btn-danger btn-large lg-mobile-font", style:"height: 100vh; width: 100%;", id: 'join_game_bttn' %>
 </div>
-<div class="col-md-2 col-sm-2 col-xs-2">
+<div class="col-md-2 col-sm-2 col-xs-2 lg-mobile-font">
     <%= image_tag asset_path('blazingkin-party-pack-logo.jpg'), style: 'width: 100%; height: 100%;' %>
 </div>
 <div class="col-md-5 col-sm-5 col-xs-5 pull-right">
-    <%= button_to "Start a new game", host_new_url, method: :get, class:"btn-danger btn button btn-large", style: "height: 100vh; width: 100%;", id: 'host_new_game_bttn' %>
+    <%= button_to "Host", host_new_url, method: :get, class:"btn-danger btn button btn-large lg-mobile-font", style: "height: 100vh; width: 100%;", id: 'host_new_game_bttn' %>
 </div>

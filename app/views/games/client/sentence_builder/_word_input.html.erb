@@ -11,7 +11,7 @@
 
 <div class="row">
     <%= text_field_tag 'Word-Entry', nil,
-             placeholder: 'Something funny goes here', class: 'form-control',
+             placeholder: 'Something funny goes here', class: 'form-control', style: 'font-size: 5vh; height: 10vh;',
              id: 'word-entry' %>
 </div>
 
@@ -19,11 +19,11 @@
 
 <div class="row">
     <div class="col-md-6 col-sm-6 col-xs-6">
-        <div class="btn btn-primary" id="submit-word">Send it!</div>
+        <div class="btn btn-primary" id="submit-word" style="font-size: 5vh">Send it!</div>
     </div>
-    <div class="col-md-6 col-sm-6 col-xs-6">
-        <div class="btn btn-warning" id="random-word">Get a random word</div>
-    </div>
+    <!--<div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="btn btn-warning" id="random-word" style="font-size: 5vh;">Get a random word</div>
+    </div>!-->
 </div>
 
 <script>
@@ -33,10 +33,11 @@
     };
 
 function randomWord(handler){
-    var requestStr = "http://setgetgo.com/randomword/get.php";
+    var requestStr = "https://setgetgo.com/randomword/get.php";
     $.ajax({
         type: "GET",
         url: requestStr,
+        crossDomain: true,
         dataType: "text",
         success: handler
     }); 

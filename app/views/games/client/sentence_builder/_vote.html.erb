@@ -10,7 +10,6 @@
         if (data['event_type'] == 'sentences'){
             $('#phrase-container').html(data['render']);         
             $('.sentence-vote-btn').click(function(obj){
-                console.log(obj);
                 App.game.send({vote: $(obj.target).attr('data')});
                 $('#phrase-container').html('Vote Received');
             });

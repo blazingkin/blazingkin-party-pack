@@ -1,11 +1,10 @@
 <h2 class="text-center">Vote for the funniest phrase!</h2>
 <br />
-<br />
-<div class="row text-center" id="phrase-container">
-</div>
-<br />
 <div class="text-center">
 <h1><span id="time-remaining">15</span> seconds left to vote!</h1>
+</div>
+<br />
+<div class="row text-center" id="phrase-container">
 </div>
 
 <script>
@@ -13,26 +12,33 @@
     App.gamejs = {};
     time_per_round = 15;
     time_remaining = time_per_round;
-    setTimeout(countdown, 1000);
+    var timeout_id = setTimeout(countdown, 1000);
     App.gamejs.receive = function(data){
         if (data['event_type'] == 'sentences'){
             $('#phrase-container').html(data['render']);
+            if (data['render'] == ''){
+                clearTimeout(timeout_id);
+            }
         }
     };
 
     function countdown(){
         if (--time_remaining > 0){
             $('#time-remaining').html(time_remaining);
-            setTimeout(countdown, 1000);
+            clearTimeout(timeout_id);
+            timeout_id = setTimeout(countdown, 1000);
         }else{
             $('#time-remaining').html(time_remaining);
             time_remaining = time_per_round;
             App.game.send({results: 'display'});
-            setTimeout(function(){
+            let newFunc = function(){
                 App.game.send({next: 'start'});
                 $('#time-remaining').html(time_remaining);
-                setTimeout(countdown, 1000);
-            }, 5000);
+                clearTimeout(timeout_id);
+                timeout_id = setTimeout(countdown, 1000);
+            }
+            clearTimeout(timeout_id);
+            timeout_id = setTimeout(newFunc, 5000);
         }
     }
 

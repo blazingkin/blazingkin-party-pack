@@ -2,7 +2,7 @@
 <% sentences.each do |sentence| %>
     <div class="row">
         <br />
-        <div class="btn <%= !winner.nil? && winner == id ? 'btn-primary' : 'btn-danger' %> sentence-vote-btn" data="<%= id %>"><%= sentence[:sentence] %></div>
+        <div style="padding-left: 5vw; padding-right: 5vw; overflow-wrap: break-word; font-size: 5vh;" class="<%= !winner.nil? && winner == id ? 'alert-info' : 'alert-danger' %> sentence-vote-btn" data="<%= id %>"><%= sentence[:sentence] %></div>
     </div>
     <% id = id + 1 %>
 <% end %>
