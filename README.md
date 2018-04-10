@@ -21,3 +21,4 @@ The blazingkin party pack!
     - A 'gutenberg-vector.bin' file is needed in the data/ directory
     - This can be generated using Google's word2vec
     - The current one I'm using is ~1Gb, so no can git
+    The path to it should be set in a `GUTENBERG_VECTOR_LOCATION` environment variable
