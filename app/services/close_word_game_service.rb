@@ -38,6 +38,8 @@ class CloseWordGameService < GameService
                 game_session.game_datum[:phase] = 'word_math'
             end
             game_session.show_host(host_view(game_session))
+        when 'end_submissions'
+            player_distance_end_round(game_session, game_session.game_datum[:phase] == 'inverse_distance')
         when 'start'
             word_dist_new_word(game_session)
         end
@@ -51,7 +53,7 @@ class CloseWordGameService < GameService
           points: 0,
           guess: '',
           voted: false,
-          distance: -1}
+          distance: 100}
         }
 
     end
@@ -74,7 +76,6 @@ class CloseWordGameService < GameService
                     else
                         if guess.pluralize != game_session.game_datum[:word].pluralize
                             p[:voted] = true
-                            p[:distance] = WordToVecService.vector_distance(guess, game_session.game_datum[:word])
                             p[:guess] = guess
                         else
                             player.broadcast({error: "Nice try, that doesn't work"})
@@ -83,9 +84,17 @@ class CloseWordGameService < GameService
                 end
             end
         end
-        players_who_voted = game_session.game_datum[:players].select {|p| p[:voted]}
-        if players_who_voted.count == game_session.game_datum[:players].count
-            player_distance_end_round game_session, inverse
+    end
+
+    def calculate_distances(game_session)
+        game_session.game_datum[:players].each do |p|
+            if p[:voted]
+                p[:distance] = WordToVecService.vector_distance(p[:guess], game_session.game_datum[:word])
+                p[:voted] = false
+            else
+                p[:guess] = ""
+                p[:distance] = 0
+            end
         end
     end
 
@@ -94,12 +103,12 @@ class CloseWordGameService < GameService
         winner_distance = inverse ? 0 : 100
         less_than = lambda {|x,y| x < y}
         less_than = lambda {|x, y| y < x} if inverse
+        calculate_distances(game_session)
         game_session.game_datum[:players].each do |p|
-            if less_than.call(p[:distance], winner_distance)
+            if !p[:guess].blank? && less_than.call(p[:distance], winner_distance)
                 winner = p
                 winner_distance = p[:distance]
             end
-            p[:voted] = false
         end
         winner[:points] += 1 if winner
         game_session.broadcast_host({

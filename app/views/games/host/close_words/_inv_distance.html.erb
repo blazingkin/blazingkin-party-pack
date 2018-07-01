@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-4 col-sm-4 col-xs-4">
         <div class="text-danger">
-            <h1>Time Left: <span id="time-left"></span></h1>
+            <h1>Time Left: <span id="time-left"></span> - Words Left: <span id="words-left"></span></h1>
         </div>
     </div>
     <div class="col-md-8 col-sm-8 col-xs-8">
@@ -24,7 +24,8 @@
 
 <script>
     App.gamejs = {}
-    var time_left = 90;
+    var time_left = 15;
+    var words_left = 5;
     App.gamejs.receive = function(data){
         if (data['word']){
             $('#word').html(data['word']);
@@ -35,8 +36,16 @@
     App.game.send({type: 'start'});
     function count_down_distance(){
         if (time_left-- <= 0){
-            clearTimeout(timer_id);
-            App.lobby_info.send({event_type: "game_over"});
+            if (words_left-- > 1){
+                time_left = 15;
+                App.game.send({type: 'end_submissions'})
+                timer_id = setTimeout(count_down_distance, 1000);
+                $('#time-left').html(time_left);
+                $('#words-left').html(words_left);
+            }else{
+                clearTimeout(timer_id);
+                App.lobby_info.send({event_type: "game_over"});
+            }
         }else{
             $('#time-left').html(time_left);
             clearTimeout(timer_id);
