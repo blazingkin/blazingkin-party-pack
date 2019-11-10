@@ -12,7 +12,7 @@ gem 'redis'
 # Word to vectors
 gem 'word2vec-ruby', git: 'https://github.com/blazingkin/word2vec-ruby'
 
-gem 'bootstrap-sass', '~> 3.2.0'
+gem 'bootstrap-sass', '~> 3.4.1'
 gem 'autoprefixer-rails'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.6'
@@ -30,7 +30,7 @@ gem 'coffee-rails', '~> 4.2'
 # gem 'therubyracer', platforms: :ruby
 
 # make things look pretty
-gem 'bootstrap', '~> 4.0.0.beta'
+gem 'bootstrap', '~> 4.3.1'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
