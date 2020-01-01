@@ -4,6 +4,8 @@ rvm:
   2.6.3
 services:
   - mysql
+env:
+  - BLAZINGKINPARTYPACK_DATABASE_USERNAME=root
 before_install:
   - mysql -e 'CREATE DATABASE bbpt;'
 install: 
