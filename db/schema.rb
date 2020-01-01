@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20171020034954) do
 
-  create_table "game_sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "game_sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.string   "short_id"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20171020034954) do
     t.index ["short_id"], name: "index_game_sessions_on_short_id", unique: true, using: :btree
   end
 
-  create_table "players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1" do |t|
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "name"

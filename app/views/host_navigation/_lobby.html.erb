@@ -3,23 +3,21 @@
         <h2>To play, go to blazingkin.com</h2>
         <h2>Join Code <i class="text-danger"><%= game_session.short_id %></i></h2>
     </div>
-    <%= render partial: 'shared/players', locals: {players: game_session.players} %>
+
 </div>
 <br />
 <div class="row">
-    <div class="col-md-4 col-sm-4">
-        <div class="btn btn-danger" id="start-click-game-button">Click Quick</div>
+    <div class="col-md-6 col-lg-6 col-sm-6">
+        <img class="w-100 game-button" src="/images/QuickClickLogo.png" id="start-click-game-button" alt="Click Quick" />
+        <br />
+        <img class="w-100 game-button" src="/images/SentenceScrambleLogo.png" id="start-sentence-builder-game-button" alt="Sentence Builder" />
+        <br />
+        <img class="w-100 game-button" id="start-scramble-game-button" alt="Word Scramble" />
+        <br />
+        <img class="w-100 game-button" id="start-close-word-game-button" alt="Close Words">
     </div>
-    <div class="col-md-4 col-sm-4">
-        <div class="btn btn-danger" id="start-sentence-builder-game-button">Sentence Builder</div>
-    </div>
-    <div class="col-md-4 col-sm-4">
-        <div class="btn btn-danger" id="start-scramble-game-button">Word Scramble</div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4 col-sm-4">
-        <div class="btn btn-danger" id="start-close-word-game-button">Close Words</div>
+    <div class="col-md-6 col-lg-6 col-sm-6">
+        <%= render partial: 'shared/players', locals: {players: game_session.players} %>
     </div>
 </div>
 
