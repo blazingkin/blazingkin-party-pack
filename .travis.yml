@@ -5,7 +5,7 @@ rvm:
 services:
   - mysql
 before_install:
-  - mysql -e 'CREATE DATABASE `blazingkin-party-pack_test`;'
+  - mysql -e 'CREATE DATABASE `bbpt`;'
 install: 
   - gem install rails
   - bundle install
