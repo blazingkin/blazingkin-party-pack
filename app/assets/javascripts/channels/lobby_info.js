@@ -26,7 +26,9 @@ App.lobby_info = App.cable.subscriptions.create({channel: "LobbyInfoChannel", ga
             create_game_client_connection(data['render']);
         }else if (data['event_type'] === 'reload_lobby'){
             App.cable.subscriptions.remove(App.game);
-            $('.container-fluid').html(data['render'])
+            $('.container-fluid').html(data['render']);
+        } else if (data['event_type'] === 'refresh_players') {
+            $('#scoreboard').html(data['render']);
         }
     }
   });

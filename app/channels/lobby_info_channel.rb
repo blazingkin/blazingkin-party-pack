@@ -6,6 +6,7 @@ class LobbyInfoChannel < ApplicationCable::Channel
         player: current_player.uuid,
         render: ApplicationController.renderer.render(partial: 'shared/player_listing', locals: {player: current_player})
       }
+      current_player.save!
       stream_from current_player.player_personal_lobby_channel
       ActionCable.server.broadcast(current_player.lobby_channel, event)
     end
@@ -40,6 +41,13 @@ class LobbyInfoChannel < ApplicationCable::Channel
       else
         p "Unauthorized Game Start"
       end
+    elsif payload['event_type'] == 'get_players'
+      host_event = {
+        event_type: 'refresh_players',
+        render: ApplicationController.renderer.render(partial: 'shared/players',
+                  locals: {players: current_player.players})
+      }
+      ActionCable.server.broadcast(current_player.group_lobby_channel, host_event)
     elsif payload['event_type'] == 'game_over'
       if current_player.is_a? GameSession
         if payload['winner'].present?

@@ -15,6 +15,7 @@ class ClientNavigationController < ApplicationController
             client_ip: request.remote_ip.to_s,
             game_session: @game_session,
         })
+        @player.save!
         cookies.signed[:player_id] = @player.id
         render 'lobby', locals: {game_session: @game_session, player: @player}
     end

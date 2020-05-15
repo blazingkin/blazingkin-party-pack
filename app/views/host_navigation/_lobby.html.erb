@@ -16,25 +16,105 @@
         <br />
         <img class="w-100 game-button" src="/images/CloseWordsLogo.png" id="start-close-word-game-button" alt="Close Words">
     </div>
-    <div class="col-md-6 col-lg-6 col-sm-6">
+    <div class="col-md-6 col-lg-6 col-sm-6" id="scoreboard">
         <%= render partial: 'shared/players', locals: {players: game_session.players} %>
     </div>
 </div>
 
 <script>
-    $(document).on('turbolinks:load', function(){
+
+    function initMusic() {
+        window.AudioContext = window.AudioContext||window.webkitAudioContext;
+        window.actxt = new AudioContext();
+        // audio <- gain <- merger <- all kinds of sources
+        gain = window.actxt.createGain();
+        gain.connect(window.actxt.destination);
+        window.game_audio = {
+            "play": (addr, loop) => {
+                if (typeof loop !== "boolean") {
+                    loop = false;
+                }
+                source = window.actxt.createBufferSource();
+                return fetch(addr).then((r) => {
+                    return r.arrayBuffer();
+                }).then((buffer) => {
+                     window.actxt.decodeAudioData(buffer, function(decodedData) {
+                        source.buffer = decodedData;
+                        source.connect(window.actxt.destination);
+                        source.loop = loop;
+                        source.start(0);
+                    });
+                    return source;
+                });
+            }
+        }
+    }
+
+    function startMusic() {
+        try {
+            if (window.game_audio === undefined) {
+                initMusic();
+            }
+            // Get elevator music
+            window.game_audio.play('/audio/lobby/elevator_music.mp3', true).then((s) => {
+                window.lobbyState["stopLobbyMusic"] = () => {
+                    s.stop();
+                }
+            })
+
+        }
+        catch(e) {
+            console.log(e);
+            alert('Audio playback is not supported in this browser');
+        }
+    }
+
+    function stopMusic() {
+        if ("stopLobbyMusic" in window.lobbyState) {
+            try {
+                lobbyState["stopLobbyMusic"]();
+            } catch(err) {
+                console.log(err);
+            }
+        }
+    }
+
+    function startUp() {
+        if (window.lobyState === undefined) {
+            window.lobbyState = {};
+        }
+        startMusic();
+        var checkForPlayers = () => {
+            console.log("Asking for player refresh");
+            setTimeout(checkForPlayers, 3000);
+            if (App.lobby_info !== undefined) {
+                App.lobby_info.send({event_type: 'get_players'});
+            } 
+        }
+        //checkForPlayers();
+    }
+
+    $(document).on('turbolinks:load', function(){    
+        window.lobbyState = {};
         create_client_lobby_connection('<%= game_session.short_id %>');
     });
     $('#start-click-game-button').click(function(){
+        stopMusic();
         App.lobby_info.send({event_type: 'start_game', game: 'click_fast'});
     });
     $('#start-scramble-game-button').click(function(){
+        stopMusic();
         App.lobby_info.send({event_type: 'start_game', game: 'word_scramble'});
     });
     $('#start-sentence-builder-game-button').click(function(){
+        stopMusic();
         App.lobby_info.send({event_type: 'start_game', game: 'sentence_builder'});
     });
     $('#start-close-word-game-button').click(function(){
+        stopMusic();
         App.lobby_info.send({event_type: 'start_game', game: 'close_word'})
     })
+
+    startUp();
+    
 </script>

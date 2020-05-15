@@ -12,12 +12,33 @@
 
 <script>
     App.gamejs = {};
+
+    function startMusic() {
+        if ("game_audio" in window) {
+            window.game_audio.play('/audio/click_quick/gotta_go_fast.mp3', false).then((s) => {
+                App.gamejs.stop_music = () => {
+                    s.stop();
+                };
+            })
+        }
+    }
+
+
+    function playDing() {
+        if ("game_audio" in window) {
+            window.game_audio.play('/audio/click_quick/ding.wav', false)
+        }
+    }
+
+
+
     var time_remaining = 15;
     setTimeout(countdown, 0);
     var scores = <%= Hash[players.map {|player| [player.uuid, {score: 0, name: player.name}] } ].to_json.html_safe %>;
     var winning_id;
     App.gamejs.receive = function(data){
         if (data['data_type'] === 'click'){
+            playDing();
             scores[data['player_uuid']]['score'] = data['player_score']
             $('#player-score-'+data['player_uuid']).html(data['player_score']);
         }
@@ -25,6 +46,10 @@
 
     function countdown(){
         if (time_remaining-- <= 1){
+            App.gamejs.receive = function(data){};
+            if ("stop_music" in App.gamejs) {
+                App.gamejs["stop_music"]();
+            }
             $('#countdown-timer').hide();
             var winner = "No one!";
             var winning_score = -1;
@@ -37,12 +62,14 @@
                         winning_id = key;
                     }
                 }
-            }
+            } 
             $('#winner-field').html(winner);
             $('#winner-display').show();
-            App.gamejs.receive = function(data){};
             setTimeout(send_winner, 2500);
         }else{
+            if (time_remaining == 9) {
+                startMusic();
+            }
             $('#time-remaining').html(time_remaining);
             setTimeout(countdown, 1000);
         }
