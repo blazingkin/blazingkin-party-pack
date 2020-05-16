@@ -10,6 +10,9 @@ Game Over!
     App.gamejs.receive = function(){
 
     };
+    function countdown() {
+
+    };
     clearTimeout(countdown);
     setTimeout(function(){
         App.lobby_info.send({event_type: "game_over", winner: <%= winning_id %>});

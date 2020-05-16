@@ -22,6 +22,13 @@
         }
     };
 
+    function startMusic() {
+        if ("game_audio" in window) {
+            window.game_audio.play('/audio/sentence_scavenge/vote_intro.mp3', false);
+        }
+    }
+    startMusic();
+
     function countdown(){
         if (--time_remaining > 0){
             $('#time-remaining').html(time_remaining);
@@ -36,6 +43,9 @@
                 $('#time-remaining').html(time_remaining);
                 clearTimeout(timeout_id);
                 timeout_id = setTimeout(countdown, 1000);
+            }
+            if ("game_audio" in window) {
+                window.game_audio.play('/audio/sentence_scavenge/bell.wav', false);
             }
             clearTimeout(timeout_id);
             timeout_id = setTimeout(newFunc, 5000);

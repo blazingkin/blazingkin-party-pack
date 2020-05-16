@@ -1,12 +1,8 @@
 <div class="row text-center">
         <h1>        
-        WELCOME TO Sentence Scavenge!!!!
+        Welcome TO Sentence Scavenge!!!!
         <br />
-        On your personal device, you will see a place to type some words.
-        <br />
-        Start typing as many words as you can think of!
-        <br />
-        If you get stuck, you can always use the "random word" button.
+        Enter funny words on your personal device!
         </h1>
 </div>
 
@@ -24,6 +20,14 @@
     App.gamejs.receive = function(){};
     var time_remaining = 45;
     var timeout_id = setTimeout(countdown, 1000);
+
+    function startMusic() {
+        if ("game_audio" in window) {
+            window.game_audio.play('/audio/sentence_scavenge/first_round.mp3', false);
+        }
+    }
+    startMusic();
+
 
     function countdown(){
         if (time_remaining-- > 1){

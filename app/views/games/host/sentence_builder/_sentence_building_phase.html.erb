@@ -20,6 +20,13 @@
     var time_remaining = 120;
     var timeout_id = setTimeout(countdown, 1000);
 
+    function startMusic() {
+        if ("game_audio" in window) {
+            window.game_audio.play('/audio/sentence_scavenge/second_round.mp3', false);
+        }
+    }
+    startMusic();
+
     function countdown(){
         if (time_remaining-- > 1){
             $('#time-remaining').html(time_remaining);
