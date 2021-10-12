@@ -113,7 +113,8 @@ GEM
       websocket-driver (>= 0.2.0)
     popper_js (1.16.0)
     public_suffix (4.0.5)
-    puma (3.12.4)
+    puma (4.3.9)
+      nio4r (~> 2.0)
     rack (2.2.2)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -213,7 +214,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   mysql2 (>= 0.3.18, < 0.5)
   poltergeist
-  puma (~> 3.12)
+  puma (~> 4.3)
   rails (~> 5.0.6)
   redis
   sass-rails (~> 5.0)
